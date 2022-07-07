@@ -1,0 +1,35 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
+        </ol>
+    </nav>
+    <div class="container">
+        <p>
+            Thông tin đơn hàng #<%= pay.cart._id %> 
+        </p>
+        <p>Người dùng : <%= pay.user.username %></p>
+        <p>
+            Thông tin khách hàng:
+            <ul>
+                <li>Họ và tên : <%= pay.informations.fullname %></li>
+                <li>Số điện thoại : <%= pay.informations.phonenumber %></li>
+                <li>Địa chỉ : <%= pay.informations.address %></li>
+                <li>Email : <%= pay.informations.email %></li>
+            </ul>
+        </p>
+        <p>
+            Thông tin hoá đơn:
+                <% for(let item of pay.cart.items)  { %>
+                <ul>
+                    <li>Sản phẩm : <%= item.book.title %></li>
+                    <li>Số lượng : <%= new Number(item.price).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ" %> </li>
+                    <li>Đơn giá : <%= item.price %></li>
+                </ul>
+                <% } %>
+            Tổng giá tiền : <%= new Number(pay.cart.totalPrice).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ" %>  
+        </p>
+        <p>Ngày thanh toán : <%= pay.createdAt %></p>
+        <a href="/admin/paychecks" class="btn btn-primary">Quay lại danh sách</a>
+    </div>

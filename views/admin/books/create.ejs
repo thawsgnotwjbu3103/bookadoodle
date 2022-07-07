@@ -1,0 +1,99 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm sách</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="">
+            <h5 class="mb-0 text-center">Thêm sách</h5>
+            <form action="/admin/books" method="post" novalidate enctype="multipart/form-data" class="needs-validation">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Tiêu đề</label>
+                    <input class="form-control" type="text" id="title" name="title" required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="author">Tác giả</label>
+                    <select class="form-select select2" id="author" name="author" required>
+                        <option value="0" selected disabled>Chọn tác giả</option>
+                        <% for(let author of authors){ %>
+                            <option value="<%= author._id%>">
+                                <%= author.fullname %>
+                            </option>
+                            <% } %>
+                    </select>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="genre">Thể loại</label>
+                    <select class="form-select select2" id="genre" name="genre" required>
+                        <option value="0" selected disabled>Chọn thể loại</option>
+                        <% for(let genre of genres){ %>
+                            <option value="<%= genre._id%>">
+                                <%= genre.genre %>
+                            </option>
+                            <% } %>
+                    </select>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Mô tả</label>
+                    <textarea name="description" id="description" cols="30" rows="10" required
+                        class="form-control"></textarea>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="publicationYear">Năm phát hành</label>
+                    <input class="form-control" type="text" id="publicationYear" name="publicationYear" required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="price">Giá tiền</label>
+                    <input class="form-control" type="number" id="price" name="price" required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="status">Trạng thái</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="0">Hết hàng</option>
+                        <option value="1" selected>Còn hàng</option>
+                    </select>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group custom-file">
+                        <label class="form-label" for="image">Ảnh bìa</label>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="image" name="image" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row gx-5">
+                        <div class="col">
+                            <button class="btn btn-primary w-100">Thêm mới</button>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-outline-primary w-100" href="/admin/books">Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

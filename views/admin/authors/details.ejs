@@ -1,0 +1,60 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <%= author.fullname %>
+            </li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-6">
+            <% if(author.images){ %>
+                <div id="carouselAuthor" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" style="height: 575px">
+                        <% author.images.forEach((img, i)=>{%>
+                            <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
+                                <img src="<%=img.url%>" class="d-block w-100" alt="">
+                            </div>
+                            <%}) %>
+                    </div>
+                    <% if(author.images.length> 1) {%>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselAuthor"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselAuthor"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        <% } %>
+                </div>
+           <% } %> 
+        </div>
+        <div class="col-6">
+           <div class="">
+            <h1><%= author.fullname %></h1>
+            <p class="text-muted">
+                Sinh năm : <%= author.age %>, <%= author.hometown %>  
+            </p>
+            <p>
+                Thông tin tác giả :
+                <%- author.description %> 
+            </p>
+            <p>Khởi tạo lúc: <%= author.createdAt %></p>
+            <p>Cập nhật lúc: <%= author.updatedAt %></p>
+           </div>
+            <div class="container-fluid px-0">
+                <div class="row gx-5">
+                    <div class="col">
+                        <a class="btn btn-primary w-100" href="/admin/authors/<%= author._id %>/edit">Chỉnh sửa</a>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-outline-primary w-100" href="/admin/authors">Quay lại</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,78 @@
+<% layout("layouts/shopLayout") %> 
+<div class="d-flex justify-content-between align-items-center">
+    <h5>Tất cả sản phẩm</h5>
+    <form action="/" method="get">
+        <div class="d-flex">
+            <input type="text" class="form-control" name="q" id="q">
+            <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </form>
+</div>
+<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <% let i = 0 %> 
+    <% for(let book of books) { %>
+        <div class="col mb-5">
+            <div class="card h-100 w-100 shadow">
+                <!-- Product image-->
+                <img class="card-img-top h-75 w-100" src="<%= book.images[0].url%>" alt="<%= book.title%>" />
+                <!-- Product details-->
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <!-- Product name-->
+                        <h5 class="fw-bolder text-truncate"><%= book.title%></h5>
+                        <!-- Product price-->
+                        <span class="display-5 fw-bold fs-5 text-danger">
+                            <%= new Number(book.price).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ"%> 
+                        </span>
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent d-flex justify-content-evenly">
+                    <div class="text-center"> 
+                        <form action="/cart/<%= book._id %>" method="post" id="addToCart_<%= i %>">
+                            <button class="btn btn-outline-success mt-auto addToCartBtn">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="text-center">
+                        <form action="/wishlist/<%= book._id %>" id="addToList_<%= i %>" method="post">
+                            <button class="btn btn-outline-danger mt-auto addToListBtn">
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <% i++ %> 
+                    <div class="text-center">
+                        <a class="btn btn-outline-primary mt-auto" href="/san-pham/<%= book._id %>">
+                            <i class="fa-solid fa-magnifying-glass"></i></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>  
+</div>
+<div class="d-flex justify-content-between align-items-center">
+    <p>Hiển thị tổng số <%= books.length %> kết quả ở trang <%= page %></p>
+    <div>
+        <nav aria-label="Book navigation">
+            <ul class="pagination">
+              <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                <a class="page-link" href="/?page=<%= hasPrevPage ? page - 1 : page %>" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="/?page=<%= page %>"><%= page %></a></li>
+              <li class="page-item <%= hasNextPage ? "" : "disabled"%>">
+                <a class="page-link" href="/?page=<%= hasNextPage ? page + 1 : page %>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+    </div>
+</div>
+<script src="/js/shopScripts.js" data-length="<%= books.length %>"></script>

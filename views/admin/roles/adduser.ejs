@@ -1,0 +1,116 @@
+<% layout("layouts/adminLayout") %>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Thêm tài khoản vào quyền truy cập</li>
+    </ol>
+</nav>
+<div class="mb-5">
+    <h4 class="my-2">Danh sách tài khoản không có trong quyền</h4>
+    <form action="/admin/roles/<%= id %>/adduser" method="get">
+        <div class="d-flex justify-content-end">
+            <input type="text" class="" name="unamenir" id="unamenir">
+            <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </form>
+    <table class="table table-hover table-bordered" id="paginateTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên người dùng</th>
+                <th>Ngày khởi tạo</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let user of userNotInRole.docs) { %>
+                <% let i = 1; %> 
+                <tr>
+                    <td><%= i %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.createdAt %></td>
+                    <td>
+                        <form action="/admin/roles/<%= id %>/<%= user._id %>/add" method="post">
+                            <button class="btn btn-info text-white"><i class="fa-solid fa-square-plus"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            <% i++; %> 
+            <% } %> 
+        </tbody>
+    </table>
+    <nav aria-label="roles_navigation">
+        <span class="my-2 d-block">Hiển thị <%= userNotInRole.docs.length %> kết quả ở trang <%= userNotInRole.page %></span>
+            <ul class="pagination">
+                <li class="page-item <%= userNotInRole.hasPrevPage ? "" : "disabled" %>">
+                    <a class="page-link" 
+                    href="/admin/roles/<%= id %>/adduser?uNIR=<%= userNotInRole.page - 1 %>&uIR=<%= userInRole.page %>" 
+                    aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-left"></i></span>
+                    </a>
+                </li>
+                <li class="page-item <%= userNotInRole.hasNextPage ? "" : "disabled" %>">
+                    <a class="page-link" 
+                    href="/admin/roles/<%= id %>/adduser?uNIR=<%= userNotInRole.hasNextPage ? userNotInRole.page + 1 : userNotInRole.page %>&uIR=<%= userInRole.page %>"
+                    aria-label="Next">
+                    <span aria-hidden="true"><i class="fa-solid fa-angles-right"></i></span>
+                    </a>
+                </li>
+            </ul>
+    </nav>
+</div>
+<hr>
+<div>
+    <h4 class="my-2">Danh sách tài khoản có trong quyền</h4>
+    <form action="/admin/roles/<%= id %>/adduser" method="get">
+        <div class="d-flex justify-content-end">
+            <input type="text" class="" name="unameir" id="unameir">
+            <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </form>
+    <table class="table table-hover table-bordered" id="paginateTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên người dùng</th>
+                <th>Ngày khởi tạo</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let user of userInRole.docs) { %>
+                <% let i = 1; %> 
+                <tr>
+                    <td><%= i %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.createdAt %></td>
+                    <td>
+                        <form action="/admin/roles/<%= id %>/<%= user._id %>/remove" method="post">
+                            <button class="btn btn-danger"><i class="fa-solid fa-square-minus"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            <% i++; %> 
+            <% } %> 
+        </tbody>
+    </table>
+    <nav aria-label="roles_navigation">
+        <span class="my-2 d-block">Hiển thị <%= userInRole.docs.length %> kết quả ở trang <%= userInRole.page %></span>
+            <ul class="pagination">
+                <li class="page-item <%= userInRole.hasPrevPage ? "" : "disabled" %>">
+                    <a class="page-link" 
+                    href="/admin/roles/<%= id %>/adduser?uIR=<%= userInRole.page - 1 %>&uNIR=<%= userNotInRole.page %>" 
+                    aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa-solid fa-angles-left"></i></span>
+                    </a>
+                </li>
+                <li class="page-item <%= userInRole.hasNextPage ? "" : "disabled" %>">
+                    <a class="page-link" 
+                    href="/admin/roles/<%= id %>/adduser?page=<%= userNotInRole.hasNextPage ? userInRole.page + 1 : userNotInRole.page %>&uNIR=<%= userNotInRole.page %>"
+                        aria-label="Next">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-right"></i></span>
+                    </a>
+                </li>
+            </ul>
+    </nav>
+</div>

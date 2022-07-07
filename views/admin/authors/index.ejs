@@ -1,0 +1,77 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Quản lý tác giả</li>
+        </ol>
+    </nav>
+    <div class="">
+        <h5 class="mb-0">Quản lý tác giả</h5>
+        <div class="my-2 d-flex align-items-center justify-content-between">
+            <a class="btn btn-primary" href="/admin/authors/create">
+                <i class="fa-solid fa-circle-plus mr-2"></i>
+                <span>Thêm tác giả</span>
+            </a>
+            <form action="/admin/authors" method="get">
+                <div class="d-flex">
+                    <input type="text" class="form-control" name="q" id="q">
+                    <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="mb-2">
+            <table class="table table-hover table-bordered" id="paginateTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên tác giả</th>
+                        <th>Ngày khởi tạo</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let author of authors) { %>
+                        <tr>
+                            <td>
+                                <%= authors.indexOf(author) + 1 %>
+                            </td>
+                            <td>
+                                <%= author.fullname %>
+                            </td>
+                            <td>
+                                <%= author.createdAt %>
+                            </td>
+                            <td>
+                                <form action="/admin/authors/<%= author._id %>?_method=DELETE" method="post">
+                                    <button class="btn btn-danger text-white"><i
+                                            class="fa-solid fa-eraser"></i></button>
+                                    <a class="btn btn-warning text-white"
+                                        href="/admin/authors/<%= author._id %>/edit"><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-info text-white"
+                                        href="/admin/authors/<%= author._id %>/details"><i
+                                            class="fa-solid fa-asterisk"></i></a>
+                                </form>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+        <nav aria-label="author_navigation">
+            <span class="my-2 d-block">Hiển thị <%= authors.length %> kết quả ở trang <%= page %></span>
+            <ul class="pagination">
+                <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                    <a class="page-link" href="/admin/authors?page=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-left"></i></span>
+                    </a>
+                </li>
+                <li class="page-item <%= hasNextPage ? "" : "disabled" %>">
+                    <a class="page-link" href="/admin/authors?page=<%= hasNextPage ? page + 1 : page %>"
+                        aria-label="Next">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-right"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>

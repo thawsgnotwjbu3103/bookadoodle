@@ -1,0 +1,163 @@
+<% layout("layouts/shopLayout") %>
+<link rel="stylesheet" href="/css/stars.css">
+<h5 class="text-center mb-5">Thông tin sản phẩm</h5>
+<div class="container">
+    <div class="row shadow">
+        <div class="col-md-6">
+            <div id="carouselBook" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" style="height: 575px">
+                    <% book.images.forEach((img, i)=>{%>
+                        <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
+                            <img src="<%=img.url%>" class="d-block w-100" alt="">
+                        </div>
+                        <%}) %>
+                </div>
+                <% if(book.images.length> 1) {%>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBook"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselBook"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <% } %>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p class="mt-5">
+                Tác giả: <a href="/tac-gia/<%= book.author._id %>"><%= book.author.fullname %></a> |
+                Thể loại: <a href="/the-loai/<%= book.genre._id %>"><%= book.genre.genre %></a> 
+            </p>
+            <h5 class="display-5 fs-3"><%= book.title %></h5>
+            <p class="fs-3">
+                Giá niêm yết : 
+                <span class="text-danger fw-bold">
+                    <%= new Number(book.price).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ" %>
+                </span>
+            </p>
+            <p class="fs-5">
+                Trạng thái : <%= book.isInStock ? "Còn hàng" : "Hết hàng" %> 
+            </p>
+            <form action="/cart/<%= book._id %>" method="POST" id="addToCartForm">
+               <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-danger w-100">Mua ngay</button>
+                    </div>
+               </div>
+            </form>
+            <p class="fs-5 mt-3">
+                Năm phát hành : <%= book.publicationYear %> 
+            </p>
+        </div>
+    </div>
+    <div class="card shadow mt-5">
+        <div class="card-body">
+          <h5 class="display-5 fw-bold fs-5">Mô tả sản phẩm :</h5>
+          <p>
+            <%- book.description %> 
+          </p>
+        </div>
+      </div>
+    <div class="mt-5 row">
+        <div class="col-md-2">
+            <div class="card shadow">
+                <div class="card-body">
+                    <% if(totalRating && totalRating > 0) { %> 
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <p class="text-center">Tổng đánh giá về sản phẩm :</p>
+                        <p>
+                            <span class="display-5 fw-bold text-danger"><%= totalRating[0] %></span>/5 
+                            (<i class="fa-solid fa-star text-warning"></i>)
+                        </p>
+                    </div>
+                    <% } else { %>
+                        <p class="text-center">Chưa có đánh giá nào về sản phẩm này</p>
+                    <% } %> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p>Hiển thị tổng số <%= reviews.length %> bình luận ở trang thứ <%= page %></p>
+                        <nav aria-label="Review navigation">
+                            <ul class="pagination">
+                              <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                                <a class="page-link" 
+                                href="/san-pham/<%= book._id %>?page=<%= hasPrevPage ? page - 1 : page %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Trước</span>
+                                </a>
+                              </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="/san-pham/<%= book._id %>?page=<%= page %>"><%= page  %></a>
+                                </li>
+                              <li class="page-item <%= hasNextPage ? "" : "disabled" %>">
+                                <a class="page-link" href="/san-pham/<%= book._id %>?page=<%= hasNextPage ? page + 1 : page %>" aria-label="Next">
+                                  <span aria-hidden="true">&raquo;</span>
+                                  <span class="sr-only">Sau</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </nav>
+                    </div>
+                    <% for(let review of reviews) { %>
+                        <div class="card mb-3 ">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 class="card-title display-5 fs-5"> <%= review.user.username%></h5>
+                                    <p class="starability-result m-0" data-rating="<%=review.rating%>">
+                                        Rated: <%= review.rating %> stars
+                                    </p>
+                                </div>
+                                <p class="card-text fs-5"><%= review.body %></p>
+                                <% if(currentUser && review.user.equals(currentUser)) {  %>
+                                   <div class="d-flex justify-content-end">
+                                        <form action="/san-pham/<%= book._id%>/<%= review._id %>?_method=DELETE" method="post">
+                                            <button class="btn btn-sm btn-danger">Xoá bình luận</button>
+                                        </form>
+                                   </div>
+                                <% } %>  
+                           </div>
+                        </div>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form action="/san-pham/<%= book._id %>" method="POST" class="needs-validation" novalidate>
+                        <fieldset class="starability-basic">
+                            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="1" checked
+                             aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="rating" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="rating" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="rating" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="rating" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="rating" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                        <div class="mb-3">
+                            <label class="form-label" for="body">Góp ý & nhận xét</label>
+                            <textarea class="form-control" name="body" id="body" cols="30" rows="3" required></textarea>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <button class="btn btn-success">Bình luận</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/shopScripts.js"></script>

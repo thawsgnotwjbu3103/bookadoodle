@@ -1,0 +1,75 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <%= book.title %>
+            </li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-6">
+            <div id="carouselBook" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" style="height: 575px">
+                    <% book.images.forEach((img, i)=>{%>
+                        <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
+                            <img src="<%=img.url%>" class="d-block w-100" alt="">
+                        </div>
+                        <%}) %>
+                </div>
+                <% if(book.images.length> 1) {%>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBook"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselBook"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <% } %>
+            </div>
+        </div>
+        <div class="col-6">
+            <p class="m-0">Tác giả : <a href="/admin/authors/<%=book.author._id%>/details">
+                    <%= book.author.fullname %>
+                </a>
+            </p>
+            <h3 class="text-break fw-normal">
+                <%= book.title %>
+            </h3>
+            <p>Thể loại : <a href="/admin/genres/<%=book.genre._id%>/details">
+                    <%= book.genre.genre %>
+                </a>
+            </p>
+            <p>
+                Giá tiền: <%= new Number(book.price).toLocaleString('en-US', {minimumFractionDigits: 2}) %> vnđ
+            </p>
+            <p>
+                Trạng thái: <%= book.isInStock ? "Còn hàng" : "Hết hàng" %>
+            </p>
+            <p>
+                Năm phát hành : <%= book.publicationYear %>
+            </p>
+            <p>
+                Mô tả: <%- book.description %>
+            </p>
+            <p>
+                Khởi tạo lúc : <%= book.createdAt %>
+            </p>
+            <p>
+                Cập nhập lúc: <%= book.updatedAt %>
+            </p>
+            <div class="container-fluid px-0">
+                <div class="row gx-5">
+                    <div class="col">
+                        <a class="btn btn-primary w-100" href="/admin/books/<%= book._id %>/edit">Chỉnh sửa</a>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-outline-primary w-100" href="/admin/books">Quay lại</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

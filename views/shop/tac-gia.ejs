@@ -1,0 +1,92 @@
+<% layout("layouts/shopLayout") %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                  <div class="h5 text-center"><%= author.fullname %></div>
+                  <img src="<%= author.images[0].thumbnail %>" class="img-fluid mx-auto d-block my-2" alt="<%= author.fullname %>">
+                  <div class="">
+                    <%- author.description %> 
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                  <div class="display-5 mb-2 fs-5">Các sản phẩm thuộc tác giả <span class="fw-bold"><%= author.fullname %></span></div>
+                  <div class="d-flex justify-content-end mb-2">
+                    <form action="/the-loai/<%= author._id %>" method="get">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" name="q" id="q">
+                            <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </form>
+                </div>
+                  <div class="row gx-4 gx-lg-5 row-cols-xl-3 row-cols-1 row-cols-md-2">
+                    <% for(let book of books) { %> 
+                        <div class="col mb-5">
+                            <div class="card h-100 w-100 shadow">
+                                <!-- Product image-->
+                                <img class="card-img-top h-75 w-100" src="<%= book.images[0].url%>" alt="<%= book.title%>" />
+                                <!-- Product details-->
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 class="fw-bolder text-truncate"><%= book.title%></h5>
+                                        <!-- Product price-->
+                                        <span class="display-5 fw-bold fs-5 text-danger">
+                                            <%= new Number(book.price).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ"%> 
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Product actions-->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent d-flex justify-content-evenly">
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-success mt-auto" href="#">
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                        </a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-danger mt-auto" href="#">
+                                            <i class="fa-solid fa-heart"></i>
+                                        </a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-primary mt-auto" href="/san-pham/<%= book._id %>">
+                                            <i class="fa-solid fa-magnifying-glass"></i></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %> 
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p>Hiển thị tổng <%= books.length %> kết quả ở trang <%= page %> </p>
+                    <nav aria-label="Author navigation">
+                        <ul class="pagination">
+                          <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                            <a class="page-link" 
+                                href="/tac-gia/<%= author._id %>?page=<%= hasPrevPage ? page - 1 : page %>" 
+                                aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                            </a>
+                          </li>
+                            <li class="page-item">
+                                <a class="page-link" href="/tac-gia/<%= author._id %>?page=<%= page %>"><%= page %></a>
+                            </li>
+                          <li class="page-item <%= hasNextPage ? "" : "disabled" %>">
+                            <a class="page-link" href="/tac-gia/<%= author._id %>?page=<%= hasNextPage ? page + 1 : page %>" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>

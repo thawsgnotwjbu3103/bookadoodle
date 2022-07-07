@@ -1,0 +1,71 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Quản lý thể loại</li>
+        </ol>
+    </nav>
+    <div class="">
+        <h5 class="mb-0">Quản lý thể loại</h5>
+        <div class="my-2 d-flex align-items-center justify-content-between">
+            <a class="btn btn-primary" href="/admin/genres/create">
+                <i class="fa-solid fa-circle-plus mr-2"></i>
+                <span>Thêm thể loại</span>
+            </a>
+            <form action="/admin/genres" method="get">
+                <div class="d-flex">
+                    <input type="text" class="form-control" name="q" id="q">
+                    <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="mb-2">
+            <table class="table table-hover table-bordered" id="paginateTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Thể loại</th>
+                        <th>Ngày khởi tạo / Ngày cập nhật</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let genre of genres) { %>
+                        <tr>
+                            <td>
+                                <%= genres.indexOf(genre) + 1 %>
+                            </td>
+                            <td>
+                                <%= genre.genre %>
+                            </td>
+                            <td>
+                                Khởi tạo lúc : <%= genre.createdAt %> <br>
+                                Cập nhật lúc : <%= genre.updatedAt %>
+                            </td>
+                            <td>
+                                <a class="btn btn-warning text-white"href="/admin/genres/<%= genre._id %>/edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <nav aria-label="genre_navigation">
+            <span class="my-2 d-block">Hiển thị <%= genres.length %> kết quả ở trang <%= page %></span>
+            <ul class="pagination">
+                <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                    <a class="page-link" href="/admin/genres?page=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-left"></i></span>
+                    </a>
+                </li>
+                <li class="page-item <%= hasNextPage ? "" : "disabled" %>">
+                    <a class="page-link" href="/admin/genres?page=<%= hasNextPage ? page + 1 : page %>"
+                        aria-label="Next">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-right"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>

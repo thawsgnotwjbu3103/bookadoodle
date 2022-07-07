@@ -1,0 +1,60 @@
+<% layout("layouts/adminLayout") %>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Quản lý hoá đơn</li>
+    </ol>
+</nav>
+<div class="">
+    <h5 class="mb-0">Quản lý hoá đơn</h5>
+    <div class="mb-2">
+        <table class="table table-hover table-bordered" id="paginateTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Khách hàng</th>
+                    <th>Số tiền thanh toán</th>
+                    <th>Ngày thanh toán</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let pay of pays) { %>
+                    <tr>
+                        <td>
+                            <%= pays.indexOf(pay) + 1 %>
+                        </td>
+                        <td>
+                            <%= pay.user.username %>
+                        </td>
+                        <td>
+                            <%= new Number(pay.cart.totalPrice).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ"  %> 
+                        </td>
+                        <td>
+                            <%= pay.createdAt %> 
+                        </td>
+                        <td>
+                            <a href="/admin/paychecks/<%= pay._id %>/details" class="btn btn-info text-white">
+                                <i class="fa-solid fa-asterisk"></i></a></a>
+                        </td>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="pay_navigation">
+        <span class="my-2 d-block">Hiển thị <%= pays.length %> kết quả ở trang <%= page %></span>
+        <ul class="pagination">
+            <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                <a class="page-link" href="/admin/pays?page=<%= page - 1 %>" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa-solid fa-angles-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item <%= hasNextPage ? "" : "disabled" %>">
+                <a class="page-link" href="/admin/pays?page=<%= hasNextPage ? page + 1 : page %>"
+                    aria-label="Next">
+                    <span aria-hidden="true"><i class="fa-solid fa-angles-right"></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

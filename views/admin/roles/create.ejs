@@ -1,0 +1,31 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm quyền truy cập</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="">
+            <h5 class="mb-0 text-center">Thêm quyền truy cập</h5>
+            <form action="/admin/roles" method="post" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label class="form-label" for="roleName">Tên quyền truy cập</label>
+                    <input class="form-control" type="text" id="roleName" name="roleName" required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row gx-5">
+                        <div class="col">
+                            <button class="btn btn-primary w-100">Thêm mới</button>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-outline-primary w-100" href="/admin/roles">Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

@@ -1,0 +1,39 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa thể loại</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="">
+            <h5 class="mb-0 text-center">Chỉnh sửa thể loại</h5>
+            <form action="/admin/genres/<%= genre._id %>?_method=PUT" method="post" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label class="form-label" for="genre">Tên thể loại</label>
+                    <input class="form-control" type="text" id="genre" name="genre" value="<%= genre.genre %>" required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Mô tả thể loại</label>
+                    <textarea cols="30" rows="10" class="form-control" id="description" name="description"
+                        required><%= genre.description %></textarea>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row gx-5">
+                        <div class="col">
+                            <button class="btn btn-primary w-100">Lưu thay đổi</button>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-outline-primary w-100" href="/admin/genres">Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

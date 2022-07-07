@@ -1,0 +1,74 @@
+<% layout("layouts/adminLayout") %> 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Quản lý quyền truy cập</li>
+    </ol>
+</nav>
+<div class="">
+    <h5 class="mb-0">Quản lý quyền truy cập</h5>
+    <div class="my-2 d-flex align-items-center justify-content-between">
+        <a class="btn btn-primary" href="/admin/roles/create">
+            <i class="fa-solid fa-circle-plus mr-2"></i>
+            <span>Thêm quyền truy cập</span>
+        </a>
+        <form action="/admin/roles" method="get">
+            <div class="d-flex">
+                <input type="text" class="form-control" name="q" id="q">
+                <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="mb-2">
+        <table class="table table-hover table-bordered" id="paginateTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên quyền</th>
+                    <th>Ngày khởi tạo / Ngày cập nhật</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let role of roles) { %>
+                    <tr>
+                        <td>
+                            <%= roles.indexOf(role) + 1 %>
+                        </td>
+                        <td>
+                            <%= role.roleName %>
+                        </td>
+                        <td>
+                            Khởi tạo lúc : <%= role.createdAt %> <br>
+                            Cập nhật lúc : <%= role.updatedAt %>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning text-white"href="/admin/roles/<%= role._id %>/edit">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a class="btn btn-info text-white" href="/admin/roles/<%= role._id %>/adduser">
+                                <i class="fa-solid fa-square-plus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    <nav aria-label="roles_navigation">
+        <span class="my-2 d-block">Hiển thị <%= roles.length %> kết quả ở trang <%= page %></span>
+            <ul class="pagination">
+                <li class="page-item <%= hasPrevPage ? "" : "disabled" %>">
+                    <a class="page-link" href="/admin/roles?page=<%= page - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-left"></i></span>
+                    </a>
+                </li>
+                <li class="page-item <%= hasNextPage ? "" : "disabled" %>">
+                    <a class="page-link" href="/admin/roles?page=<%= hasNextPage ? page + 1 : page %>"
+                        aria-label="Next">
+                        <span aria-hidden="true"><i class="fa-solid fa-angles-right"></i></span>
+                    </a>
+                </li>
+            </ul>
+    </nav>
+</div>

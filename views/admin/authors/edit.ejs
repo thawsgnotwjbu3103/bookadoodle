@@ -1,0 +1,76 @@
+<% layout("layouts/adminLayout") %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Sửa thông tin tác giả</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="">
+            <h5 class="mb-0 text-center">Sửa thông tin tác giả</h5>
+            <form action="/admin/authors/<%=author._id%>?_method=PUT" method="post" novalidate
+                enctype="multipart/form-data" class="needs-validation">
+                <div class="mb-3">
+                    <label class="form-label" for="fullname">Tên tác giả</label>
+                    <input class="form-control" type="text" id="fullname" value="<%= author.fullname %>" name="fullname"
+                        required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="age">Tuổi</label>
+                    <input class="form-control" type="text" id="age" value="<%= author.age %>" name="age" required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="hometown">Quê quán</label>
+                    <input class="form-control" type="text" value="<%= author.hometown %>" id="hometown" name="hometown"
+                        required>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Mô tả tác giả</label>
+                    <textarea cols="30" rows="10" class="form-control" id="description" name="description"
+                        required><%= author.description %></textarea>
+                    <div class="valid-feedback">
+                        Ok!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <% if(author.images){ %>
+                        <% author.images.forEach(function(img, i) { %>
+                            <img src="<%=img.thumbnail %>" class="img-thumbnail" alt="">
+                            <div class="form-check-inline">
+                                <input type="checkbox" id="image-<%=i%>" name="deleteImages[]"
+                                    value="<%=img.fileName%>">
+                            </div>
+                            <label for="image-<%=i%>">Xoá ảnh này?</label>
+                            <% })%>
+                                <% } %>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group custom-file">
+                        <label class="form-label" for="image">Ảnh bìa</label>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="image" name="image" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row gx-5">
+                        <div class="col">
+                            <button class="btn btn-primary w-100">Lưu thay đổi</button>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-outline-primary w-100" href="/admin/authors">Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

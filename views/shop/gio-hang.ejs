@@ -1,0 +1,82 @@
+<% layout("layouts/shopLayout") %> 
+<div class="card shadow">
+    <div class="card-body">
+        <h5 class="mb-3">Hoá đơn giỏ hàng</h5>
+       <% if (carts) { %>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body shadow">
+                            <div class="d-flex justify-content-end">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/gio-hang?page=<%= page > 0 ? page - 1 : page %>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/gio-hang?page=<%= page >= 0 ? page + 1 : page %>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <% for(let cart of carts.items) { %> 
+                                <div class="card mb-2">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div class="">
+                                            <span class=""><%= carts.items.indexOf(cart) + 1%>.</span>
+                                            <span class="">
+                                                <%= cart.book.title %>                                             
+                                            </span>
+                                            <p class="ms-5">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="me-2">Số lượng : </span>
+                                                    <form action="/updatecart/<%= cart.book._id %>?_method=PUT" method="post" class="d-flex align-items-center">
+                                                        <input class="me-2 w-25" type="number" min="0" value="<%= cart.qty %>" name="qty">
+                                                        <button class="btn btn-sm btn-success">Cập nhật</button>
+                                                    </form>
+                                                </div>
+                                                <br>
+                                                Đơn giá : <%= new Number(cart.price).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ" %>
+                                            </p>
+                                        </div>
+                                        <div class="">
+                                            <img src="<%= cart.book.images[0].thumbnail %>" class="d-md-block d-none" style="height: 100px; width: 75px" alt="">
+                                            <form action="/deletecart/<%= cart.book._id %>" method="post" class="mt-3">
+                                                <button class="btn btn-sm btn-outline-danger w-100">Xoá</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="fw-bold fs-3 text-danger">
+                                    Tổng tiền : <%= new Number(carts.totalPrice).toLocaleString('en-US', {minimumFractionDigits: 0}) + " vnđ" %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="fs-5">Vui lòng điền thông tin trước khi thanh toán</h5>
+                            <form action="/checkout/<%= carts._id %>" method="post" class="needs-validation">
+                                <input type="text" class="form-control mb-3" name="fullname" id="fullname" required placeholder="Họ và tên">
+                                <input type="text" class="form-control mb-3" name="address" id="address" required placeholder="Địa chỉ">
+                                <input type="email" class="form-control mb-3" name="email" id="email" required placeholder="Địa chỉ email">
+                                <input type="tel" class="form-control mb-3" name="phonenumber" id="phonenumber" pattern="[0-9]{10}" required placeholder="Nhập số điện thoại">
+                                <button class="btn btn-danger w-100">Thanh toán</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+       <% } else { %>
+        <div class="py-5 my-5"></div>
+        <% } %>
+    </div>
+</div>
